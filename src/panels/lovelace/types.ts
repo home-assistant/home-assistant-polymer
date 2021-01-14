@@ -87,4 +87,9 @@ export interface LovelaceGenericElementEditor extends HTMLElement {
   lovelace?: LovelaceConfig;
   setConfig(config: any): void;
   refreshYamlEditor?: (focus: boolean) => void;
+  editorOptions?: LovelaceEditorOptions;
+}
+
+export interface LovelaceEditorOptions {
+  hide_entities?: boolean;
 }

@@ -23,7 +23,7 @@ import { HistoryGraphCardConfig } from "../../cards/types";
 import { EntityId } from "../../common/structs/is-entity-id";
 import "../../components/hui-entity-editor";
 import { EntityConfig } from "../../entity-rows/types";
-import { LovelaceCardEditor } from "../../types";
+import { LovelaceCardEditor, LovelaceEditorOptions } from "../../types";
 import { processEditorEntities } from "../process-editor-entities";
 import { EditorTarget, EntitiesEditorEvent } from "../types";
 import { configElementStyle } from "./config-elements-style";
@@ -48,6 +48,8 @@ const cardConfigStruct = object({
 export class HuiHistoryGraphCardEditor extends LitElement
   implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
+
+  @property({ attribute: false }) public editorOptions?: LovelaceEditorOptions;
 
   @internalProperty() private _config?: HistoryGraphCardConfig;
 
@@ -88,9 +90,9 @@ export class HuiHistoryGraphCardEditor extends LitElement
           )} (${this.hass.localize(
             "ui.panel.lovelace.editor.card.config.optional"
           )})"
-          .value="${this._title}"
-          .configValue="${"title"}"
-          @value-changed="${this._valueChanged}"
+          .value=${this._title}
+          .configValue=${"title"}
+          @value-changed=${this._valueChanged}
         ></paper-input>
         <div class="side-by-side">
           <paper-input
@@ -100,9 +102,9 @@ export class HuiHistoryGraphCardEditor extends LitElement
             )} (${this.hass.localize(
               "ui.panel.lovelace.editor.card.config.optional"
             )})"
-            .value="${this._hours_to_show}"
+            .value=${this._hours_to_show}
             .configValue=${"hours_to_show"}
-            @value-changed="${this._valueChanged}"
+            @value-changed=${this._valueChanged}
           ></paper-input>
           <paper-input
             type="number"
@@ -111,16 +113,20 @@ export class HuiHistoryGraphCardEditor extends LitElement
             )} (${this.hass.localize(
               "ui.panel.lovelace.editor.card.config.optional"
             )})"
-            .value="${this._refresh_interval}"
+            .value=${this._refresh_interval}
             .configValue=${"refresh_interval"}
-            @value-changed="${this._valueChanged}"
+            @value-changed=${this._valueChanged}
           ></paper-input>
         </div>
-        <hui-entity-editor
-          .hass=${this.hass}
-          .entities="${this._configEntities}"
-          @entities-changed="${this._valueChanged}"
-        ></hui-entity-editor>
+        ${this.editorOptions?.hide_entities
+          ? ""
+          : html`
+              <hui-entity-editor
+                .hass=${this.hass}
+                .entities=${this._configEntities}
+                @entities-changed=${this._valueChanged}
+              ></hui-entity-editor>
+            `}
       </div>
     `;
   }

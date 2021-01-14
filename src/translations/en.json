@@ -2648,6 +2648,13 @@
               "name": "Entity",
               "description": "The Entity card gives you a quick overview of your entity’s state."
             },
+            "entity_filter": {
+              "card": "Card",
+              "delete_state": "Delete state",
+              "entities": "Entities",
+              "show_empty": "Display card when empty",
+              "states": "Matching states"
+            },
             "button": {
               "name": "Button",
               "description": "The Button card allows you to add buttons to perform tasks.",

@@ -21,7 +21,7 @@ import "../../components/hui-action-editor";
 import "../../components/hui-entity-editor";
 import "../../components/hui-theme-select-editor";
 import { EntityConfig } from "../../entity-rows/types";
-import { LovelaceCardEditor } from "../../types";
+import { LovelaceCardEditor, LovelaceEditorOptions } from "../../types";
 import { processEditorEntities } from "../process-editor-entities";
 import {
   actionConfigStruct,
@@ -50,6 +50,8 @@ const includeDomains = ["camera"];
 export class HuiPictureGlanceCardEditor extends LitElement
   implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
+
+  @property({ attribute: false }) public editorOptions?: LovelaceEditorOptions;
 
   @internalProperty() private _config?: PictureGlanceCardConfig;
 
@@ -119,9 +121,9 @@ export class HuiPictureGlanceCardEditor extends LitElement
           )} (${this.hass.localize(
             "ui.panel.lovelace.editor.card.config.optional"
           )})"
-          .value="${this._title}"
-          .configValue="${"title"}"
-          @value-changed="${this._valueChanged}"
+          .value=${this._title}
+          .configValue=${"title"}
+          @value-changed=${this._valueChanged}
         ></paper-input>
         <paper-input
           .label="${this.hass.localize(
@@ -129,9 +131,9 @@ export class HuiPictureGlanceCardEditor extends LitElement
           )} (${this.hass.localize(
             "ui.panel.lovelace.editor.card.config.optional"
           )})"
-          .value="${this._image}"
-          .configValue="${"image"}"
-          @value-changed="${this._valueChanged}"
+          .value=${this._image}
+          .configValue=${"image"}
+          @value-changed=${this._valueChanged}
         ></paper-input>
         <ha-entity-picker
           .label="${this.hass.localize(
@@ -140,9 +142,9 @@ export class HuiPictureGlanceCardEditor extends LitElement
             "ui.panel.lovelace.editor.card.config.optional"
           )})"
           .hass=${this.hass}
-          .value="${this._camera_image}"
+          .value=${this._camera_image}
           .configValue=${"camera_image"}
-          @value-changed="${this._valueChanged}"
+          @value-changed=${this._valueChanged}
           allow-custom-entity
           .includeDomains=${includeDomains}
         ></ha-entity-picker>
@@ -153,12 +155,12 @@ export class HuiPictureGlanceCardEditor extends LitElement
             )} (${this.hass.localize(
               "ui.panel.lovelace.editor.card.config.optional"
             )})"
-            .configValue="${"camera_view"}"
-            @value-changed="${this._valueChanged}"
+            .configValue=${"camera_view"}
+            @value-changed=${this._valueChanged}
           >
             <paper-listbox
               slot="dropdown-content"
-              .selected="${views.indexOf(this._camera_view)}"
+              .selected=${views.indexOf(this._camera_view)}
             >
               ${views.map((view) => {
                 return html` <paper-item>${view}</paper-item> `;
@@ -171,9 +173,9 @@ export class HuiPictureGlanceCardEditor extends LitElement
             )} (${this.hass.localize(
               "ui.panel.lovelace.editor.card.config.optional"
             )})"
-            .value="${this._aspect_ratio}"
-            .configValue="${"aspect_ratio"}"
-            @value-changed="${this._valueChanged}"
+            .value=${this._aspect_ratio}
+            .configValue=${"aspect_ratio"}
+            @value-changed=${this._valueChanged}
           ></paper-input>
         </div>
         <ha-entity-picker
@@ -183,9 +185,9 @@ export class HuiPictureGlanceCardEditor extends LitElement
             "ui.panel.lovelace.editor.card.config.optional"
           )})"
           .hass=${this.hass}
-          .value="${this._entity}"
+          .value=${this._entity}
           .configValue=${"entity"}
-          @value-changed="${this._valueChanged}"
+          @value-changed=${this._valueChanged}
           allow-custom-entity
         ></ha-entity-picker>
         <div class="side-by-side">
@@ -196,10 +198,10 @@ export class HuiPictureGlanceCardEditor extends LitElement
               "ui.panel.lovelace.editor.card.config.optional"
             )})"
             .hass=${this.hass}
-            .config="${this._tap_action}"
-            .actions="${actions}"
-            .configValue="${"tap_action"}"
-            @value-changed="${this._valueChanged}"
+            .config=${this._tap_action}
+            .actions=${actions}
+            .configValue=${"tap_action"}
+            @value-changed=${this._valueChanged}
           ></hui-action-editor>
           <hui-action-editor
             .label="${this.hass.localize(
@@ -208,22 +210,26 @@ export class HuiPictureGlanceCardEditor extends LitElement
               "ui.panel.lovelace.editor.card.config.optional"
             )})"
             .hass=${this.hass}
-            .config="${this._hold_action}"
-            .actions="${actions}"
-            .configValue="${"hold_action"}"
-            @value-changed="${this._valueChanged}"
+            .config=${this._hold_action}
+            .actions=${actions}
+            .configValue=${"hold_action"}
+            @value-changed=${this._valueChanged}
           ></hui-action-editor>
         </div>
-        <hui-entity-editor
-          .hass=${this.hass}
-          .entities="${this._configEntities}"
-          @entities-changed="${this._valueChanged}"
-        ></hui-entity-editor>
+        ${this.editorOptions?.hide_entities
+          ? ""
+          : html`
+              <hui-entity-editor
+                .hass=${this.hass}
+                .entities=${this._configEntities}
+                @entities-changed=${this._valueChanged}
+              ></hui-entity-editor>
+            `}
         <hui-theme-select-editor
           .hass=${this.hass}
-          .value="${this._theme}"
-          .configValue="${"theme"}"
-          @value-changed="${this._valueChanged}"
+          .value=${this._theme}
+          .configValue=${"theme"}
+          @value-changed=${this._valueChanged}
         ></hui-theme-select-editor>
       </div>
     `;

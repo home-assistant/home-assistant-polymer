@@ -31,7 +31,7 @@ import { HomeAssistant } from "../../../../types";
 import { ConfigEntity, GlanceCardConfig } from "../../cards/types";
 import "../../components/hui-entity-editor";
 import "../../components/hui-theme-select-editor";
-import { LovelaceCardEditor } from "../../types";
+import { LovelaceCardEditor, LovelaceEditorOptions } from "../../types";
 import { processEditorEntities } from "../process-editor-entities";
 import {
   EditorTarget,
@@ -56,6 +56,8 @@ const cardConfigStruct = object({
 export class HuiGlanceCardEditor extends LitElement
   implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
+
+  @property({ attribute: false }) public editorOptions?: LovelaceEditorOptions;
 
   @internalProperty() private _config?: GlanceCardConfig;
 
@@ -192,11 +194,15 @@ export class HuiGlanceCardEditor extends LitElement
           ></ha-switch>
         </ha-formfield>
       </div>
-      <hui-entity-editor
-        .hass=${this.hass}
-        .entities=${this._configEntities}
-        @entities-changed=${this._valueChanged}
-      ></hui-entity-editor>
+      ${this.editorOptions?.hide_entities
+        ? ""
+        : html`
+            <hui-entity-editor
+              .hass=${this.hass}
+              .entities=${this._configEntities}
+              @entities-changed=${this._valueChanged}
+            ></hui-entity-editor>
+          `}
     `;
   }
 

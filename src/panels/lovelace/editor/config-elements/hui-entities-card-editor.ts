@@ -33,7 +33,7 @@ import type { EntitiesCardConfig } from "../../cards/types";
 import "../../components/hui-theme-select-editor";
 import type { LovelaceRowConfig } from "../../entity-rows/types";
 import { headerFooterConfigStructs } from "../../header-footer/types";
-import type { LovelaceCardEditor } from "../../types";
+import type { LovelaceCardEditor, LovelaceEditorOptions } from "../../types";
 import "../header-footer-editor/hui-header-footer-editor";
 import "../hui-entities-card-row-editor";
 import "../hui-sub-element-editor";
@@ -61,6 +61,8 @@ const cardConfigStruct = object({
 export class HuiEntitiesCardEditor extends LitElement
   implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
+
+  @property({ attribute: false }) public editorOptions?: LovelaceEditorOptions;
 
   @internalProperty() private _config?: EntitiesCardConfig;
 
@@ -158,12 +160,16 @@ export class HuiEntitiesCardEditor extends LitElement
           @edit-detail-element=${this._editDetailElement}
         ></hui-header-footer-editor>
       </div>
-      <hui-entities-card-row-editor
-        .hass=${this.hass}
-        .entities=${this._configEntities}
-        @entities-changed=${this._valueChanged}
-        @edit-detail-element=${this._editDetailElement}
-      ></hui-entities-card-row-editor>
+      ${this.editorOptions?.hide_entities
+        ? ``
+        : html`
+            <hui-entities-card-row-editor
+              .hass=${this.hass}
+              .entities=${this._configEntities}
+              @entities-changed=${this._valueChanged}
+              @edit-detail-element=${this._editDetailElement}
+            ></hui-entities-card-row-editor>
+          `}
     `;
   }
 

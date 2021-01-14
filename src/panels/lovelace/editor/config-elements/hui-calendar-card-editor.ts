@@ -22,7 +22,7 @@ import type { HomeAssistant } from "../../../../types";
 import type { CalendarCardConfig } from "../../cards/types";
 import "../../components/hui-entity-editor";
 import "../../components/hui-theme-select-editor";
-import type { LovelaceCardEditor } from "../../types";
+import type { LovelaceCardEditor, LovelaceEditorOptions } from "../../types";
 import type { EditorTarget, EntitiesEditorEvent } from "../types";
 import { configElementStyle } from "./config-elements-style";
 
@@ -40,6 +40,8 @@ const views = ["dayGridMonth", "dayGridDay", "listWeek"];
 export class HuiCalendarCardEditor extends LitElement
   implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
+
+  @property({ attribute: false }) public editorOptions?: LovelaceEditorOptions;
 
   @property({ attribute: false }) private _config?: CalendarCardConfig;
 
@@ -75,8 +77,8 @@ export class HuiCalendarCardEditor extends LitElement
             .label="${this.hass.localize(
               "ui.panel.lovelace.editor.card.generic.title"
             )} (${this.hass.localize(
-              "ui.panel.lovelace.editor.card.config.optional"
-            )})"
+      "ui.panel.lovelace.editor.card.config.optional"
+    )})"
             .value=${this._title}
             .configValue=${"title"}
             @value-changed=${this._valueChanged}
@@ -112,20 +114,29 @@ export class HuiCalendarCardEditor extends LitElement
           @value-changed=${this._valueChanged}
         ></hui-theme-select-editor>
       </div>
-      <h3>
-        ${this.hass.localize(
-          "ui.panel.lovelace.editor.card.calendar.calendar_entities"
-        ) +
-        " (" +
-        this.hass!.localize("ui.panel.lovelace.editor.card.config.required") +
-        ")"}
-      </h3>
-      <ha-entities-picker
-        .hass=${this.hass!}
-        .value=${this._configEntities}
-        .includeDomains=${["calendar"]}
-        @value-changed=${this._valueChanged}
-      >
+      ${
+        this.editorOptions?.hide_entities
+          ? ""
+          : html`
+              <h3>
+                ${this.hass.localize(
+                  "ui.panel.lovelace.editor.card.calendar.calendar_entities"
+                ) +
+                " (" +
+                this.hass!.localize(
+                  "ui.panel.lovelace.editor.card.config.required"
+                ) +
+                ")"}
+              </h3>
+              <ha-entities-picker
+                .hass=${this.hass!}
+                .value=${this._configEntities}
+                .includeDomains=${["calendar"]}
+                @value-changed=${this._valueChanged}
+              >
+              </ha-entities-picker>
+            `
+      }
       </ha-entities-picker>
     `;
   }
