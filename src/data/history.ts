@@ -4,6 +4,7 @@ import { computeStateDomain } from "../common/entity/compute_state_domain";
 import { computeStateName } from "../common/entity/compute_state_name";
 import { LocalizeFunc } from "../common/translations/localize";
 import { HomeAssistant } from "../types";
+import { UNAVAILABLE_STATES } from "./entity";
 
 const DOMAINS_USE_LAST_UPDATED = ["climate", "humidifier", "water_heater"];
 const LINE_ATTRIBUTES_TO_KEEP = [
@@ -200,6 +201,23 @@ const processLineChartEntities = (
   };
 };
 
+const isNumerical = (states: HassEntity[]): boolean => {
+  if (states.every((state) => UNAVAILABLE_STATES.includes(state.state))) {
+    return false;
+  }
+
+  if (
+    states.some(
+      (state) =>
+        isNaN(parseFloat(state.state)) &&
+        !UNAVAILABLE_STATES.includes(state.state)
+    )
+  ) {
+    return false;
+  }
+  return true;
+};
+
 export const computeHistory = (
   hass: HomeAssistant,
   stateHistory: HassEntity[][],
@@ -231,6 +249,8 @@ export const computeHistory = (
       unit = hass.config.unit_system.temperature;
     } else if (computeStateDomain(stateInfo[0]) === "humidifier") {
       unit = "%";
+    } else if (isNumerical(stateInfo)) {
+      unit = " ";
     }
 
     if (!unit) {
