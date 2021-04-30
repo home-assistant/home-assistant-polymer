@@ -1,4 +1,10 @@
-import { fuzzyScore } from "./filter";
+import { TemplateResult } from "lit-html";
+import {
+  createMatches,
+  createMatchesFragmented,
+  FuzzyScore,
+  fuzzyScore,
+} from "./filter";
 
 /**
  * Determine whether a sequence of letters exists in another string,
@@ -10,13 +16,24 @@ import { fuzzyScore } from "./filter";
  * @return {number} Score representing how well the word matches the filter. Return of 0 means no match.
  */
 
-export const fuzzySequentialMatch = (
+type FuzzySequentialMatcher = (
   filter: string,
-  item: ScorableTextItem
+  item: ScorableTextItem,
+  decorate?: MatchDecorator
+) => ScorableTextItem | undefined;
+
+export const fuzzySequentialMatch: FuzzySequentialMatcher = (
+  filter,
+  item,
+  decorate = createMatchDecorator((letter) => `[${letter}]`)
 ) => {
   let topScore = Number.NEGATIVE_INFINITY;
+  const decoratedStrings: Decoration[][][] = [];
+  const strings = item.treatArrayAsSingleString
+    ? [item.strings.join("")]
+    : item.strings;
 
-  for (const word of item.strings) {
+  for (const word of strings) {
     const scores = fuzzyScore(
       filter,
       filter.toLowerCase(),
@@ -26,6 +43,10 @@ export const fuzzySequentialMatch = (
       0,
       true
     );
+
+    if (decorate) {
+      decoratedStrings.push(decorate(word, item, scores));
+    }
 
     if (!scores) {
       continue;
@@ -45,7 +66,11 @@ export const fuzzySequentialMatch = (
     return undefined;
   }
 
-  return topScore;
+  return {
+    score: topScore,
+    strings: item.strings,
+    decoratedStrings,
+  };
 };
 
 /**
@@ -64,21 +89,87 @@ export const fuzzySequentialMatch = (
 export interface ScorableTextItem {
   score?: number;
   strings: string[];
+  decoratedStrings?: Decoration[][][];
+  treatArrayAsSingleString?: boolean;
 }
 
 type FuzzyFilterSort = <T extends ScorableTextItem>(
   filter: string,
-  items: T[]
+  items: T[],
+  decorate?: MatchDecorator
 ) => T[];
 
-export const fuzzyFilterSort: FuzzyFilterSort = (filter, items) => {
+export const fuzzyFilterSort: FuzzyFilterSort = (
+  filter,
+  items,
+  decorate = createMatchDecorator((letter) => `[${letter}]`)
+) => {
   return items
     .map((item) => {
-      item.score = fuzzySequentialMatch(filter, item);
+      const match = fuzzySequentialMatch(filter, item, decorate);
+
+      item.score = match?.score;
+      item.decoratedStrings = match?.decoratedStrings;
+
       return item;
     })
     .filter((item) => item.score !== undefined)
     .sort(({ score: scoreA = 0 }, { score: scoreB = 0 }) =>
       scoreA > scoreB ? -1 : scoreA < scoreB ? 1 : 0
     );
+};
+
+type Decoration = string | TemplateResult;
+
+export type Surrounder = (matchedChunk: Decoration) => Decoration;
+
+type MatchDecorator = (
+  word: string,
+  item: ScorableTextItem,
+  scores?: FuzzyScore
+) => Decoration[][];
+
+export const createMatchDecorator: (
+  surrounder: Surrounder
+) => MatchDecorator = (surrounder) => (word, item, scores) =>
+  _decorateMatch(word, surrounder, item, scores);
+
+const _decorateMatch: (
+  word: string,
+  surrounder: Surrounder,
+  item: ScorableTextItem,
+  scores?: FuzzyScore
+) => Decoration[][] = (word, surrounder, item, scores) => {
+  if (!scores) {
+    return [[word]];
+  }
+
+  const decoratedText: Decoration[][] = [];
+  const matches = item.treatArrayAsSingleString
+    ? createMatchesFragmented(scores, item.strings)
+    : [createMatches(scores)];
+
+  for (let i = 0; i < matches.length; i++) {
+    const match = matches[i];
+    const _word = item.treatArrayAsSingleString ? item.strings[i] : word;
+    let pos = 0;
+    const actualWord: Decoration[] = [];
+
+    for (const fragmentedMatch of match) {
+      const unmatchedChunk = _word.substring(pos, fragmentedMatch.start);
+      const matchedChunk = _word.substring(
+        fragmentedMatch.start,
+        fragmentedMatch.end
+      );
+
+      actualWord.push(unmatchedChunk);
+      actualWord.push(surrounder(matchedChunk));
+
+      pos = fragmentedMatch.end;
+    }
+
+    actualWord.push(_word.substring(pos));
+    decoratedText.push(actualWord);
+  }
+  return decoratedText;
 };
