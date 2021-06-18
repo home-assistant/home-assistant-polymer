@@ -241,6 +241,9 @@ export class HuiGlanceCard extends LitElement implements LovelaceCard {
       `;
     }
 
+    const name =
+      "name" in entityConf ? entityConf.name : computeStateName(stateObj);
+
     return html`
       <div
         class="entity"
@@ -255,13 +258,7 @@ export class HuiGlanceCard extends LitElement implements LovelaceCard {
         )}
       >
         ${this._config!.show_name
-          ? html`
-              <div class="name">
-                ${"name" in entityConf
-                  ? entityConf.name
-                  : computeStateName(stateObj)}
-              </div>
-            `
+          ? html` <div class="name" .title=${name}>${name}</div> `
           : ""}
         ${this._config!.show_icon
           ? html`
