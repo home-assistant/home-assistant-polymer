@@ -7,9 +7,16 @@ import "./ha-icon";
 export class HaIconButton extends LitElement {
   @property({ type: Boolean, reflect: true }) disabled = false;
 
-  @property({ type: String }) icon = "";
+  // Regular icon name
+  @property({ type: String }) icon?: string;
 
+  // SVG icon path
+  @property({ type: String }) path?: string;
+
+  // Label that is used for ARIA support and as tooltip
   @property({ type: String }) label = "";
+
+  @property({ type: Boolean }) hideTooltip = false;
 
   static shadowRootOptions: ShadowRootInit = {
     mode: "open",
@@ -18,8 +25,13 @@ export class HaIconButton extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <mwc-icon-button .label=${this.label} .disabled=${this.disabled}>
-        <ha-icon .icon=${this.icon}></ha-icon>
+      <mwc-icon-button
+        .label=${this.label}
+        .title=${this.hideTooltip ? "" : this.label}
+        .disabled=${this.disabled}
+      >
+        ${this.icon ? html`<ha-icon .icon=${this.icon}></ha-icon>` : ""}
+        ${this.path ? html`<ha-svg-icon .path=${this.path}></ha-svg-icon>` : ""}
       </mwc-icon-button>
     `;
   }
