@@ -181,6 +181,11 @@
   resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.13.0.tgz#806526ce125aed03373bc416a828321e3a6a33af"
   integrity sha512-ZPafIPSwzUlAoWT8DKs1W2VyF2gOWthGd5NGFMsBcMMol+ZhK+EQY/e6V96poa6PA/Bh+C9plWN0hXO1uB8AfQ==
 
+"@babel/helper-plugin-utils@^7.14.5":
+  version "7.14.5"
+  resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.14.5.tgz#5ac822ce97eec46741ab70a517971e443a70c5a9"
+  integrity sha512-/37qQCE3K0vvZKwoK4XU/irIJQdIfCJuhU5eKnNxpFDsOkgFaUAwbv+RYw6eYgsC0E4hS7r5KqGULUogqui0fQ==
+
 "@babel/helper-remap-async-to-generator@^7.13.0":
   version "7.13.0"
   resolved "https://registry.yarnpkg.com/@babel/helper-remap-async-to-generator/-/helper-remap-async-to-generator-7.13.0.tgz#376a760d9f7b4b2077a9dd05aa9c3927cadb2209"
@@ -535,6 +540,13 @@
   integrity sha512-A81F9pDwyS7yM//KwbCSDqy3Uj4NMIurtplxphWxoYtNPov7cJsDkAFNNyVlIZ3jwGycVsurZ+LtOA8gZ376iQ==
   dependencies:
     "@babel/helper-plugin-utils" "^7.12.13"
+
+"@babel/plugin-syntax-top-level-await@^7.14.5":
+  version "7.14.5"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-top-level-await/-/plugin-syntax-top-level-await-7.14.5.tgz#c1cfdadc35a646240001f06138247b741c34d94c"
+  integrity sha512-hx++upLv5U1rgYfwe1xBQUhRmU41NEvpUvrp8jkrSCdvGSnM5/qdRMtylJ6PG5OFkBaHkbTAKTnd3/YyESRHFw==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.14.5"
 
 "@babel/plugin-syntax-typescript@^7.12.13":
   version "7.12.13"
@@ -1109,6 +1121,13 @@
   dependencies:
     tslib "^2.1.0"
 
+"@formatjs/ecma402-abstract@1.9.4":
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.9.4.tgz#797ae6c407fb5a0d09023a60c86f19aca1958c5e"
+  integrity sha512-ePJXI7tWC9PBxQxS7jtbkCLGVmpC8MH8n9Yjmg8dsh9wXK9svu7nAbq76Oiu5Zb+5GVkLkeTVerlSvHCbNImlA==
+  dependencies:
+    tslib "^2.1.0"
+
 "@formatjs/fast-memoize@1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@formatjs/fast-memoize/-/fast-memoize-1.1.1.tgz#3006b58aca1e39a98aca213356b42da5d173f26b"
@@ -1131,6 +1150,14 @@
     "@formatjs/ecma402-abstract" "1.9.1"
     tslib "^2.1.0"
 
+"@formatjs/intl-datetimeformat@^4.1.6":
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-datetimeformat/-/intl-datetimeformat-4.1.6.tgz#ce30d3907dfb229c79e023c03171da09b2611e36"
+  integrity sha512-o4M/RzBNAC/LmOwAd3W/3bsCT7xl9luddNdX9x1uZroS/8Wx6M8sE/KMNDCSZogZtmMasCBvpNmuQoeMyBBASg==
+  dependencies:
+    "@formatjs/ecma402-abstract" "1.9.4"
+    tslib "^2.1.0"
+
 "@formatjs/intl-getcanonicallocales@1.7.0", "@formatjs/intl-getcanonicallocales@^1.5.10":
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-getcanonicallocales/-/intl-getcanonicallocales-1.7.0.tgz#f864cc8228976599719d0a8212a1e6d7c846b38d"
@@ -1149,6 +1176,14 @@
     cldr-core "38"
     tslib "^2.1.0"
 
+"@formatjs/intl-numberformat@^7.1.5":
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-numberformat/-/intl-numberformat-7.1.5.tgz#8d1df875f7dfbd2ed8e1326fddb5f4dad3c66d11"
+  integrity sha512-1U6IEp/1vf2XzfDjLWqJuQufRZY3/F9UfOCAVp14eYVb/+gZmG4Q3heJQZXOAKnnQl3YGG73Ez7UgFVo/rowGQ==
+  dependencies:
+    "@formatjs/ecma402-abstract" "1.9.4"
+    tslib "^2.1.0"
+
 "@formatjs/intl-pluralrules@^4.0.22":
   version "4.0.22"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-4.0.22.tgz#2a56baef93ef4deac7957ee1d945a6f5332c1261"
@@ -1156,6 +1191,21 @@
   dependencies:
     "@formatjs/ecma402-abstract" "1.9.1"
     tslib "^2.1.0"
+
+"@formatjs/intl-relativetimeformat@^9.1.7":
+  version "9.1.7"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-relativetimeformat/-/intl-relativetimeformat-9.1.7.tgz#9c5481b4d4ac39de3162c836cedef52feeae8a05"
+  integrity sha512-uthmRnNg+agzulNxa4Em2Jbll1msbJdkb6CO8JrOg/CFHyXH9YPMaPjCxgzR2wdDeMjBjGnFhbTJZtqz5LN+Uw==
+  dependencies:
+    "@formatjs/ecma402-abstract" "1.9.4"
+    tslib "^2.1.0"
+
+"@formatjs/intl-utils@^3.8.4":
+  version "3.8.4"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-utils/-/intl-utils-3.8.4.tgz#291baac91001db428fc3275c515a3e40fbe95945"
+  integrity sha512-j5C6NyfKevIxsfLK8KwO1C0vvP7k1+h4A9cFpc+cr6mEwCc1sPkr17dzh0Ke6k9U5pQccAQoXdcNBl3IYa4+ZQ==
+  dependencies:
+    emojis-list "^3.0.0"
 
 "@fullcalendar/common@5.1.0", "@fullcalendar/common@~5.1.0":
   version "5.1.0"
@@ -6579,11 +6629,6 @@ faye-websocket@^0.11.3:
   integrity sha512-D2y4bovYpzziGgbHYtGCMjlJM36vAl/y+xUyn1C+FVx8szd1E+86KwVw6XvYSzOP8iMpm1X0I4xJD+QtUb36OA==
   dependencies:
     websocket-driver ">=0.5.1"
-
-fecha@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/fecha/-/fecha-4.2.0.tgz#3ffb6395453e3f3efff850404f0a59b6747f5f41"
-  integrity sha512-aN3pcx/DSmtyoovUudctc8+6Hl4T+hI9GBBHLjA76jdZl7+b1sgh5g4k+u/GL3dTy1/pnYzKp69FpJ0OicE3Wg==
 
 figures@^3.0.0, figures@^3.2.0:
   version "3.2.0"

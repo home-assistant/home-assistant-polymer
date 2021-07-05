@@ -1,8 +1,9 @@
-import { format } from "fecha";
 import memoizeOne from "memoize-one";
 import { FrontendLocaleData } from "../../data/translation";
-import { toLocaleTimeStringSupportsOptions } from "./check_options_support";
 import { useAmPm } from "./use_am_pm";
+import { polyfillsLoaded } from "../translations/localize";
+
+await polyfillsLoaded;
 
 const formatTimeMem = memoizeOne(
   (locale: FrontendLocaleData) =>
@@ -13,11 +14,8 @@ const formatTimeMem = memoizeOne(
     })
 );
 
-export const formatTime = toLocaleTimeStringSupportsOptions
-  ? (dateObj: Date, locale: FrontendLocaleData) =>
-      formatTimeMem(locale).format(dateObj)
-  : (dateObj: Date, locale: FrontendLocaleData) =>
-      format(dateObj, "shortTime" + useAmPm(locale) ? " A" : "");
+export const formatTime = (dateObj: Date, locale: FrontendLocaleData) =>
+  formatTimeMem(locale).format(dateObj);
 
 const formatTimeWithSecondsMem = memoizeOne(
   (locale: FrontendLocaleData) =>
@@ -29,11 +27,10 @@ const formatTimeWithSecondsMem = memoizeOne(
     })
 );
 
-export const formatTimeWithSeconds = toLocaleTimeStringSupportsOptions
-  ? (dateObj: Date, locale: FrontendLocaleData) =>
-      formatTimeWithSecondsMem(locale).format(dateObj)
-  : (dateObj: Date, locale: FrontendLocaleData) =>
-      format(dateObj, "mediumTime" + useAmPm(locale) ? " A" : "");
+export const formatTimeWithSeconds = (
+  dateObj: Date,
+  locale: FrontendLocaleData
+) => formatTimeWithSecondsMem(locale).format(dateObj);
 
 const formatTimeWeekdayMem = memoizeOne(
   (locale: FrontendLocaleData) =>
@@ -45,8 +42,5 @@ const formatTimeWeekdayMem = memoizeOne(
     })
 );
 
-export const formatTimeWeekday = toLocaleTimeStringSupportsOptions
-  ? (dateObj: Date, locale: FrontendLocaleData) =>
-      formatTimeWeekdayMem(locale).format(dateObj)
-  : (dateObj: Date, locale: FrontendLocaleData) =>
-      format(dateObj, "dddd, HH:mm" + useAmPm(locale) ? " A" : "");
+export const formatTimeWeekday = (dateObj: Date, locale: FrontendLocaleData) =>
+  formatTimeWeekdayMem(locale).format(dateObj);

@@ -1,7 +1,8 @@
-import { format } from "fecha";
 import memoizeOne from "memoize-one";
 import { FrontendLocaleData } from "../../data/translation";
-import { toLocaleDateStringSupportsOptions } from "./check_options_support";
+import { polyfillsLoaded } from "../translations/localize";
+
+await polyfillsLoaded;
 
 const formatDateMem = memoizeOne(
   (locale: FrontendLocaleData) =>
@@ -12,10 +13,8 @@ const formatDateMem = memoizeOne(
     })
 );
 
-export const formatDate = toLocaleDateStringSupportsOptions
-  ? (dateObj: Date, locale: FrontendLocaleData) =>
-      formatDateMem(locale).format(dateObj)
-  : (dateObj: Date) => format(dateObj, "longDate");
+export const formatDate = (dateObj: Date, locale: FrontendLocaleData) =>
+  formatDateMem(locale).format(dateObj);
 
 const formatDateShortMem = memoizeOne(
   (locale: FrontendLocaleData) =>
@@ -25,10 +24,8 @@ const formatDateShortMem = memoizeOne(
     })
 );
 
-export const formatDateShort = toLocaleDateStringSupportsOptions
-  ? (dateObj: Date, locale: FrontendLocaleData) =>
-      formatDateShortMem(locale).format(dateObj)
-  : (dateObj: Date) => format(dateObj, "shortDate");
+export const formatDateShort = (dateObj: Date, locale: FrontendLocaleData) =>
+  formatDateShortMem(locale).format(dateObj);
 
 const formatDateWeekdayMem = memoizeOne(
   (locale: FrontendLocaleData) =>
@@ -39,7 +36,5 @@ const formatDateWeekdayMem = memoizeOne(
     })
 );
 
-export const formatDateWeekday = toLocaleDateStringSupportsOptions
-  ? (dateObj: Date, locale: FrontendLocaleData) =>
-      formatDateWeekdayMem(locale).format(dateObj)
-  : (dateObj: Date) => format(dateObj, "dddd, MMM D");
+export const formatDateWeekday = (dateObj: Date, locale: FrontendLocaleData) =>
+  formatDateWeekdayMem(locale).format(dateObj);
