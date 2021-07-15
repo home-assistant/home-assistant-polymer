@@ -52,18 +52,15 @@ export class HaDeviceActionsZWaveJS extends LitElement {
           )}
         </mwc-button>
       </a>
-<<<<<<< HEAD
       <mwc-button @click=${this._reinterviewClicked}>
         ${this.hass.localize(
           "ui.panel.config.zwave_js.device_info.reinterview_device"
         )}
-=======
-      <mwc-button @click=${this._reinterviewClicked}
-        >Re-interview Device</mwc-button
-      >
+      </mwc-button>
       <mwc-button @click=${this._removeFailedNode}>
-        Remove Failed Device
->>>>>>> Initial commit for Remove Failed Node UI
+        ${this.hass.localize(
+          "ui.panel.config.zwave_js.device_info.remove_failed"
+        )}
       </mwc-button>
     `;
   }

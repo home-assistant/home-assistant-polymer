@@ -2627,7 +2627,11 @@
             "node_status": "Node Status",
             "node_ready": "Node Ready",
             "device_config": "Configure Device",
+<<<<<<< HEAD
             "reinterview_device": "Re-interview Device"
+=======
+            "remove_failed": "Remove Failed Device"
+>>>>>>> translate button
           },
           "node_config": {
             "header": "Z-Wave Device Configuration",
