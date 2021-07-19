@@ -263,7 +263,7 @@ export const computeMediaControls = (
   }
 
   if (
-    (state === "playing" || state === "paused") &&
+    (state === "on" || state === "playing" || state === "paused") &&
     supportsFeature(stateObj, SUPPORT_PREVIOUS_TRACK)
   ) {
     buttons.push({
@@ -301,7 +301,7 @@ export const computeMediaControls = (
   }
 
   if (
-    (state === "playing" || state === "paused") &&
+    (state === "on" || state === "playing" || state === "paused") &&
     supportsFeature(stateObj, SUPPORT_NEXT_TRACK)
   ) {
     buttons.push({
