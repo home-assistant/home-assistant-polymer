@@ -318,24 +318,23 @@ class HuiWeatherForecastCard extends LitElement implements LovelaceCard {
                             </div>
                           `
                         : ""}
-                      ${item.temperature !== undefined &&
-                      item.temperature !== null
-                        ? html`
-                            <div class="temp">
-                              ${formatNumber(
-                                item.temperature,
-                                this.hass!.locale
-                              )}°
-                            </div>
-                          `
-                        : ""}
-                      ${item.templow !== undefined && item.templow !== null
-                        ? html`
-                            <div class="templow">
-                              ${formatNumber(item.templow, this.hass!.locale)}°
-                            </div>
-                          `
-                        : ""}
+                      <div class="temp">
+                        ${item.temperature !== undefined &&
+                        item.temperature !== null
+                          ? html` ${formatNumber(
+                              item.temperature,
+                              this.hass!.locale
+                            )}°`
+                          : "—"}
+                      </div>
+                      <div class="templow">
+                        ${item.templow !== undefined && item.templow !== null
+                          ? html` ${formatNumber(
+                              item.templow,
+                              this.hass!.locale
+                            )}°`
+                          : "—"}
+                      </div>
                     </div>
                   `
                 )}
