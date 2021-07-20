@@ -79,7 +79,7 @@ class HuiGridCard extends HuiStackCard<GridCardConfig> {
         :host([square]) #root {
           grid-auto-rows: 1fr;
         }
-        :host([square]) #root::before {
+        :host([square]) #root::after {
           content: "";
           width: 0;
           padding-bottom: 100%;
@@ -87,9 +87,13 @@ class HuiGridCard extends HuiStackCard<GridCardConfig> {
           grid-column: 1 / 1;
         }
 
-        :host([square]) #root > *:first-child {
+        :host([square]) #root > *:not([hidden]) {
           grid-row: 1 / 1;
           grid-column: 1 / 1;
+        }
+        :host([square]) #root > *:not([hidden]) ~ *:not([hidden]) {
+          grid-row: unset;
+          grid-column: unset;
         }
       `,
     ];
